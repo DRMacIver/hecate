@@ -1,6 +1,7 @@
 import os
 import binascii
 from tmux import Tmux
+import time
 
 muxes = []
 
@@ -73,3 +74,17 @@ def test_can_capture_a_pane():
     pane_contents = mux.capture_pane(panes[0])
     assert "hello world" in pane_contents
     assert len(pane_contents.split("\n")) == 50
+
+
+def test_can_send_content_to_the_screen():
+    mux = newmux()
+    pane = mux.panes()[0]
+    mux.send_keys(pane, ["echo", " ", "hello", " ", "world", "Enter"])
+    start = time.time()
+    while time.time() < start + 1:
+        contents = mux.capture_pane(pane)
+        assert "echo hello world\n" in contents
+        if "\nhello world\n" in contents:
+            break
+
+    assert "\nhello world\n" in contents

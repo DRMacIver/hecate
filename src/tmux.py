@@ -19,9 +19,15 @@ class Tmux(object):
     def __init__(self, name):
         self.name = name
         try:
-            self.execute_command("list-sessions")
+            o = open("/dev/null")
+            subprocess.check_output(
+                ["tmux", "-L", self.name, "list-sessions"],
+                stderr=subprocess.STDOUT
+            )
         except subprocess.CalledProcessError:
             self.new_session()
+        finally:
+            o.close()
 
     def execute_command(self, *command):
         return subprocess.check_output(
@@ -48,8 +54,21 @@ class Tmux(object):
     def buffers(self):
         return _extract_names(self.execute_command("list-buffers"))
 
-    def panes(self):
-        return _extract_names(self.execute_command("list-panes"))
+    def panes(self, session=None):
+        if session is None:
+            return _extract_names(self.execute_command("list-panes"))
+        else:
+            return _extract_names(self.execute_command(
+                "list-panes", "-t", session
+            ))
+
+    def select_pane(self, pane):
+        self.execute_command("select-pane", "-t", pane)
+
+    def send_keys(self, pane, keys):
+        self.execute_command(*(
+            ["send-keys", "-t", pane] + list(keys)
+        ))
 
     def sessions(self):
         return _extract_names(self.execute_command("list-sessions"))
@@ -88,9 +107,15 @@ class Tmux(object):
 
     def shutdown(self):
         try:
-            self.execute_command("kill-server")
+            o = open("/dev/null")
+            subprocess.check_call(
+                ["tmux", "-L", self.name, "kill-server"],
+                stderr=subprocess.STDOUT
+            )
         except subprocess.CalledProcessError:
             pass
+        finally:
+            o.close()
 
     @contextmanager
     def temp(self):
