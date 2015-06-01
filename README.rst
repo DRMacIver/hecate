@@ -26,8 +26,11 @@ Are you serious?
 
 Not very, no. As a concept it works and works well, and I'm fully prepared to
 maintain this if it proves popular, but this should be considered a semi
-experimental which just happens to be orders of magnitude better than all of
-the for serious mature projects you could be using instead.
+experimental hack which just happens to be orders of magnitude better than
+all of the for serious mature projects you could be using instead.
+
+On the other hand the last time I wrote a semi-experimental testing hack that
+just happened to be the best round (in Python), we got `Hypothesis <https://github.com/DRMacIver/hypothesis>`_, so...
 
 ----------------------------
 Will you support Python 2.7?
