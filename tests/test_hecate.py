@@ -3,6 +3,8 @@
 from hecate.hecate import Runner, AbnormalExit
 import tempfile
 import pytest
+import sys
+import os
 
 
 Runner.print_on_exit = True
@@ -86,3 +88,16 @@ def test_sets_the_console_size_appropriately():
         h.press("Enter")
         h.press("C-d")
         h.await_exit()
+
+
+PRINTER = os.path.join(
+    os.path.abspath(
+        os.path.dirname(__file__)), "..", "scripts", "sigprinter.py")
+
+
+def test_can_send_signals_to_child():
+    with pytest.raises(AbnormalExit):
+        with Runner(sys.executable, PRINTER) as h:
+            for s in ["SIGTERM", "SIGUSR1", "SIGQUIT"]:
+                h.kill(s)
+                h.await_text(s)

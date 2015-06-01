@@ -140,6 +140,7 @@ class Runner(object):
                 )
             report = self.report_variables()
             os.kill(report[runner.CONTROLLER], signal.SIGUSR1)
+            self.child_pid = report[runner.CHILD]
         except:
             self.shutdown_called = True
             self.tmux.shutdown()
@@ -238,6 +239,15 @@ class Runner(object):
                     return
         self.screenshot()
         raise Timeout("Timeout while waiting for process to exit")
+
+    def kill(self, sig):
+        """
+        Send a signal to the running process. sig is either an integer signal
+        number or the name of the signal.
+        """
+        if isinstance(sig, str):
+            sig = getattr(signal, sig)
+        os.kill(self.child_pid, sig)
 
     def poll_until_timeout(self, timeout=None):
         if timeout is None:
