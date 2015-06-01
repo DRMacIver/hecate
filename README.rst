@@ -31,16 +31,16 @@ Why not?
 --------
 
 Because you shouldn't need it and I don't want to. Hecate scripts are stand
-alone applications written green field that interact with your program through
-its terminal interface. You can easily test things written in any language you
-like, including other versions of Python.
+alone applications that interact with your program through its terminal
+interface. You can easily test things written in any language you like,
+including other versions of Python.
 
 ------------------------
 Why is it called Hecate?
 ------------------------
 
-It seemed appropriate to name a Selenium for curses based applications after
-`a goddess whose domain includes the moon and magic
+It seemed appropriate to name a Selenium style tool for curses based
+applications after `a goddess whose domain includes the moon and magic
 <http://en.wikipedia.org/wiki/Hecate>`_.
 
 -----------------

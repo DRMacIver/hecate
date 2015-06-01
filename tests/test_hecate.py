@@ -68,3 +68,22 @@ def test_reports_abnormal_exit():
     with pytest.raises(AbnormalExit):
         with Hecate("cat", "/does/not/exist/no/really"):
             pass
+
+
+def test_can_send_eof():
+    with Hecate("cat") as h:
+        h.press("C-d")
+        print(h.screenshot())
+        h.await_exit()
+
+
+def test_sets_the_console_size_appropriately():
+    with Hecate("cat", width=10, height=100) as h:
+        h.write("." * 100)
+        h.press("Enter")
+        h.write("Squirrel")
+        h.await_text("Squirrel")
+        assert "." * 10 + "\n" + "." * 10 in h.screenshot()
+        h.press("Enter")
+        h.press("C-d")
+        h.await_exit()
