@@ -55,6 +55,8 @@ RUNNER_PROGRAM = os.path.abspath(
 
 
 class Hecate(object):
+    print_on_exit = False
+
     def __init__(
         self,
         *command,
@@ -180,6 +182,8 @@ class Hecate(object):
                 self.await_exit()
             except Timeout:
                 pass
+            if self.print_on_exit:
+                print(self.last_screenshot)
         finally:
             report = self.report_variables()
             for c in [runner.CHILD, runner.CONTROLLER]:

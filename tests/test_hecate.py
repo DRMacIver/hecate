@@ -5,11 +5,13 @@ import tempfile
 import pytest
 
 
+Hecate.print_on_exit = True
+
+
 def test_can_launch_a_simple_program():
     f = tempfile.mktemp()
-    with Hecate("bash", "-c", "echo hello world > %s" % (f,)) as h:
+    with Hecate("bash", "-c", "echo hello world > %s" % (f,)):
         return
-    print(h.last_screenshot)
     with open(f) as r:
         assert "Hello world" in r.read()
 
@@ -17,7 +19,6 @@ def test_can_launch_a_simple_program():
 def test_can_kill_vim():
     with Hecate("vim") as h:
         h.await_text("VIM")
-        print(h.screenshot())
         h.press(":")
         h.press("q")
         h.press("Enter")
@@ -47,7 +48,6 @@ def test_can_run_vim():
         # complain that it can't write viminfo and tell you to press enter to
         # continue.
         h.press("Enter")
-        print(h.screenshot())
         h.await_exit()
     with open(f) as r:
         text = r.read()
@@ -73,7 +73,6 @@ def test_reports_abnormal_exit():
 def test_can_send_eof():
     with Hecate("cat") as h:
         h.press("C-d")
-        print(h.screenshot())
         h.await_exit()
 
 
