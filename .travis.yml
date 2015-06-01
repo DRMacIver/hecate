@@ -25,3 +25,6 @@ install:
 
 script:
     - scripts/run.sh
+
+notifications:
+    email: false
