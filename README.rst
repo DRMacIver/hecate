@@ -32,6 +32,22 @@ all of the for serious mature projects you could be using instead.
 On the other hand the last time I wrote a semi-experimental testing hack that
 just happened to be the best around (in Python), we got `Hypothesis <https://github.com/DRMacIver/hypothesis>`_, so...
 
+------------------------
+Why is it called Hecate?
+------------------------
+
+It seemed appropriate to name a Selenium style tool for curses based
+applications after `a goddess whose domain includes the moon and magic
+<http://en.wikipedia.org/wiki/Hecate>`_.
+
+------------------------
+Does it support unicode?
+------------------------
+
+Please. It's 2015. Are people still writing software that doesn't? Next you'll
+tell me that they're writing it in a language that has raw byte sequences as
+its primary string type.
+
 ----------------------------
 Will you support Python 2.7?
 ----------------------------
@@ -54,14 +70,6 @@ What versions of tmux does it support?
 My CI tests it on versions 1.6 through 2.0, so that's the officially supported
 set. It probably works on earlier ones but I haven't tested and am not very
 interested in doing so.
-
-------------------------
-Why is it called Hecate?
-------------------------
-
-It seemed appropriate to name a Selenium style tool for curses based
-applications after `a goddess whose domain includes the moon and magic
-<http://en.wikipedia.org/wiki/Hecate>`_.
 
 -----------------
 How does it work?
