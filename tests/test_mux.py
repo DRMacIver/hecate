@@ -1,6 +1,6 @@
 import os
 import binascii
-from tmux import Tmux
+from hecate.tmux import Tmux
 import time
 
 muxes = []

@@ -8,6 +8,10 @@ import tempfile
 AFTER_COLON = re.compile(":.+$")
 
 
+class CommandFailed(Exception):
+    pass
+
+
 def _extract_names(output):
     return list(filter(None, [
         AFTER_COLON.sub("", l)
@@ -19,20 +23,22 @@ class Tmux(object):
     def __init__(self, name):
         self.name = name
         try:
-            o = open("/dev/null")
             subprocess.check_output(
                 ["tmux", "-L", self.name, "list-sessions"],
                 stderr=subprocess.STDOUT
             )
         except subprocess.CalledProcessError:
             self.new_session()
-        finally:
-            o.close()
 
     def execute_command(self, *command):
-        return subprocess.check_output(
-            ["tmux", "-L", self.name] + list(map(str, command)),
-        ).decode('ascii')
+        try:
+            cmd = ["tmux", "-L", self.name] + list(map(str, command))
+            return subprocess.check_output(
+                cmd,
+                stderr=subprocess.STDOUT
+            ).decode('ascii')
+        except subprocess.CalledProcessError as e:
+            raise CommandFailed(e.output)
 
     def new_session(
         self, width=80, height=24, window=None, name=None, command=None
@@ -40,7 +46,7 @@ class Tmux(object):
         arguments = ["new-session", "-d", "-x", width, "-y", height]
         if window is not None:
             arguments.extend([
-                "-n", window
+                "-s", window
             ])
         if name is not None:
             arguments.extend(["-s", name])
@@ -68,6 +74,11 @@ class Tmux(object):
     def send_keys(self, pane, keys):
         self.execute_command(*(
             ["send-keys", "-t", pane] + list(keys)
+        ))
+
+    def send_key(self, pane, key):
+        self.execute_command(*(
+            ["send-keys", "-t", pane, key]
         ))
 
     def sessions(self):
@@ -110,7 +121,7 @@ class Tmux(object):
             o = open("/dev/null")
             subprocess.check_call(
                 ["tmux", "-L", self.name, "kill-server"],
-                stderr=subprocess.STDOUT
+                stderr=o
             )
         except subprocess.CalledProcessError:
             pass
