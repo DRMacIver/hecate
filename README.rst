@@ -8,6 +8,14 @@ expect or pexpect it runs a full blown terminal emulator (specifically, tmux)
 behind the scenes, so you can take accurate snapshots of what your application
 would look like when run by a real user.
 
+Usage
+=====
+
+Hecate is currently shall we say lightly documented (this is a euphemism for
+undocumented). However `the tests <https://github.com/DRMacIver/hecate/blob/master/tests/test_hecate.py>`_
+should work tolerably well as usage examples and there are reasonable docstrings
+on `the implementation <https://github.com/DRMacIver/hecate/blob/master/src/hecate/hecate.py>`_.
+
 
 Frequently Anticipated Questions
 ================================
