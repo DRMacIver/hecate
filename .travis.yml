@@ -1,0 +1,28 @@
+language: c
+
+sudo: false
+
+os:
+    - linux
+
+cache:
+    apt: true
+    directories:
+        - $HOME/.tmuxen
+        - $HOME/.pyenv
+
+env:
+    matrix:
+        - HECATE_TMUX_BINARY=$HOME/.tmuxen/tmux-1.6
+        - HECATE_TMUX_BINARY=$HOME/.tmuxen/tmux-1.7
+        - HECATE_TMUX_BINARY=$HOME/.tmuxen/tmux-1.8
+        - HECATE_TMUX_BINARY=$HOME/.tmuxen/tmux-1.9
+        - HECATE_TMUX_BINARY=$HOME/.tmuxen/tmux-1.9a
+        - HECATE_TMUX_BINARY=$HOME/.tmuxen/tmux-2.0
+
+install:
+    - ./scripts/install.sh
+
+script:
+    - python -c 'import hecate.tmux.TMUX; print("tmux=", TMUX)'
+    - tox

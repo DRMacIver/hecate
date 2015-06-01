@@ -19,12 +19,15 @@ def _extract_names(output):
     ]))
 
 
+TMUX = os.getenv("HECATE_TMUX_BINARY") or "tmux"
+
+
 class Tmux(object):
     def __init__(self, name):
         self.name = name
         try:
             subprocess.check_output(
-                ["tmux", "-L", self.name, "list-sessions"],
+                [TMUX, "-u", "-L", self.name, "list-sessions"],
                 stderr=subprocess.STDOUT
             )
         except subprocess.CalledProcessError:
@@ -32,7 +35,7 @@ class Tmux(object):
 
     def execute_command(self, *command):
         try:
-            cmd = ["tmux", "-L", self.name] + list(map(str, command))
+            cmd = [TMUX, "-u", "-L", self.name] + list(map(str, command))
             return subprocess.check_output(
                 cmd,
                 stderr=subprocess.STDOUT
@@ -93,12 +96,12 @@ class Tmux(object):
     def get_buffer(self, buf):
         with self.temp() as t:
             self.execute_command("save-buffer", "-b", buf, t)
-            with open(t) as o:
+            with open(t, encoding="utf-8") as o:
                 return o.read()
 
     def new_buffer(self, data):
         with self.temp() as t:
-            with open(t, "w") as o:
+            with open(t, "w", encoding="utf-8") as o:
                 o.write(data)
             self.execute_command("load-buffer", t)
 
@@ -120,7 +123,7 @@ class Tmux(object):
         try:
             o = open("/dev/null")
             subprocess.check_call(
-                ["tmux", "-L", self.name, "kill-server"],
+                [TMUX, "-u", "-L", self.name, "kill-server"],
                 stderr=o
             )
         except subprocess.CalledProcessError:

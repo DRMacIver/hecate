@@ -128,9 +128,8 @@ class Hecate(object):
         self.tmux.send_key(0, key)
 
     def write(self, text):
-        self.tmux.execute_command(*(
-            ["send-keys", "0"] + list(text)
-        ))
+        self.tmux.new_buffer(text)
+        self.tmux.execute_command("paste-buffer")
 
     def await_ready(self, timeout=None):
         if self.ready:
@@ -165,6 +164,7 @@ class Hecate(object):
                         "Process exited with status %d" % (status,))
                 else:
                     return
+        self.screenshot()
         raise Timeout("Timeout while waiting for process to exit")
 
     def start(self, timeout=None):
