@@ -30,7 +30,7 @@ experimental hack which just happens to be orders of magnitude better than
 all of the for serious mature projects you could be using instead.
 
 On the other hand the last time I wrote a semi-experimental testing hack that
-just happened to be the best round (in Python), we got `Hypothesis <https://github.com/DRMacIver/hypothesis>`_, so...
+just happened to be the best around (in Python), we got `Hypothesis <https://github.com/DRMacIver/hypothesis>`_, so...
 
 ----------------------------
 Will you support Python 2.7?
