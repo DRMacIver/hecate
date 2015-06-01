@@ -11,6 +11,15 @@ would look like when run by a real user.
 Frequently Anticipated Questions
 ================================
 
+----------------
+Are you serious?
+----------------
+
+Not very, no. As a concept it works and works well, and I'm fully prepared to
+maintain this if it proves popular, but this should be considered a semi
+experimental which just happens to be orders of magnitude better than all of
+the for serious mature projects you could be using instead.
+
 ----------------------------
 Will you support Python 2.7?
 ----------------------------
