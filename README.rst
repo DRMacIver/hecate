@@ -36,7 +36,7 @@ just happened to be the best around (in Python), we got `Hypothesis <https://git
 Will you support Python 2.7?
 ----------------------------
 
-No
+No.
 
 --------
 Why not?
@@ -47,9 +47,9 @@ alone applications that interact with your program through its terminal
 interface. You can easily test things written in any language you like,
 including other versions of Python.
 
--------------------------------------
-What versions of tox does it support?
--------------------------------------
+--------------------------------------
+What versions of tmux does it support?
+--------------------------------------
 
 My CI tests it on versions 1.6 through 2.0, so that's the officially supported
 set. It probably works on earlier ones but I haven't tested and am not very
@@ -72,3 +72,7 @@ with it along with a monitoring process so that we can report back the exit
 code (after all, who would make a testing framework that didn't report the
 standard mechanism for indicating errors back to you?). Hecate interacts with
 the tmux server using its command line tools.
+
+I might update it to use the control protocol at some point, but it so far
+doesn't seem that useful to do so and that would limit the range of supported
+tmux versions or require a lot of version specific code.
