@@ -24,16 +24,15 @@ README = local_file("README.rst")
 
 setup(
     name='tmux',
-    version="0.0.1",
+    version="0.1.0",
     author='David R. MacIver',
     author_email='david@drmaciver.com',
     packages=find_packages(SOURCE),
     package_dir={"": SOURCE},
-    url='https://github.com/DRMacIver/tmux',
+    url='https://github.com/DRMacIver/hecate',
     license='MPL v2',
-    description='A library for controlling tmux instances for testing',
+    description='A selenium style testing library for console applications',
     zip_safe=False,
     long_description=open(README).read(),
-    tests_require=[
-        'pytest', 'flake8'],
+    tests_require=['pytest']
 )
