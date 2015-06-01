@@ -24,5 +24,5 @@ install:
     - ./scripts/install.sh
 
 script:
-    - python -c 'import hecate.tmux.TMUX; print("tmux=", TMUX)'
+    - PYTHONPATH=src python -c 'from hecate.tmux import TMUX; print("tmux=", TMUX)'
     - tox
