@@ -8,6 +8,7 @@ expect or pexpect it runs a full blown terminal emulator (specifically, tmux)
 behind the scenes, so you can take accurate snapshots of what your application
 would look like when run by a real user.
 
+
 Frequently Anticipated Questions
 ================================
 
@@ -34,6 +35,14 @@ Because you shouldn't need it and I don't want to. Hecate scripts are stand
 alone applications that interact with your program through its terminal
 interface. You can easily test things written in any language you like,
 including other versions of Python.
+
+-------------------------------------
+What versions of tox does it support?
+-------------------------------------
+
+My CI tests it on versions 1.6 through 2.0, so that's the officially supported
+set. It probably works on earlier ones but I haven't tested and am not very
+interested in doing so.
 
 ------------------------
 Why is it called Hecate?

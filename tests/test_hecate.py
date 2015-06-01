@@ -1,23 +1,23 @@
 # coding=utf-8
 
-from hecate.hecate import Hecate, AbnormalExit
+from hecate.hecate import Runner, AbnormalExit
 import tempfile
 import pytest
 
 
-Hecate.print_on_exit = True
+Runner.print_on_exit = True
 
 
 def test_can_launch_a_simple_program():
     f = tempfile.mktemp()
-    with Hecate("bash", "-c", "echo hello world > %s" % (f,)):
+    with Runner("bash", "-c", "echo hello world > %s" % (f,)):
         return
     with open(f) as r:
         assert "Hello world" in r.read()
 
 
 def test_can_kill_vim():
-    with Hecate("vim") as h:
+    with Runner("vim") as h:
         h.await_text("VIM")
         h.press(":")
         h.press("q")
@@ -25,14 +25,14 @@ def test_can_kill_vim():
 
 
 def test_can_write_unicode():
-    with Hecate("cat") as h:
+    with Runner("cat") as h:
         h.write("☃")
         h.await_text("☃")
 
 
 def test_can_run_vim():
     f = tempfile.mktemp()
-    with Hecate("/usr/bin/vim") as h:
+    with Runner("/usr/bin/vim") as h:
         h.await_text("VIM")
         h.press("i")
         h.write("Hello world")
@@ -56,7 +56,7 @@ def test_can_run_vim():
 
 
 def test_can_send_enter():
-    with Hecate("cat") as h:
+    with Runner("cat") as h:
         h.write("hi")
         h.press("Enter")
         h.write("there")
@@ -66,18 +66,18 @@ def test_can_send_enter():
 
 def test_reports_abnormal_exit():
     with pytest.raises(AbnormalExit):
-        with Hecate("cat", "/does/not/exist/no/really"):
+        with Runner("cat", "/does/not/exist/no/really"):
             pass
 
 
 def test_can_send_eof():
-    with Hecate("cat") as h:
+    with Runner("cat") as h:
         h.press("C-d")
         h.await_exit()
 
 
 def test_sets_the_console_size_appropriately():
-    with Hecate("cat", width=10, height=100) as h:
+    with Runner("cat", width=10, height=100) as h:
         h.write("." * 100)
         h.press("Enter")
         h.write("Squirrel")

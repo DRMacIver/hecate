@@ -23,7 +23,7 @@ README = local_file("README.rst")
 
 
 setup(
-    name='tmux',
+    name='hecate',
     version="0.1.0",
     author='David R. MacIver',
     author_email='david@drmaciver.com',
