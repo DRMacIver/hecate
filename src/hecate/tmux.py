@@ -12,6 +12,10 @@ class CommandFailed(Exception):
     pass
 
 
+class DeadServer(CommandFailed):
+    pass
+
+
 def _extract_names(output):
     return list(filter(None, [
         AFTER_COLON.sub("", l)
@@ -41,6 +45,8 @@ class Tmux(object):
                 stderr=subprocess.STDOUT
             ).decode('ascii')
         except subprocess.CalledProcessError as e:
+            if b"failed to connect to server: Connection refused" in e.output:
+                raise DeadServer(e.output)
             raise CommandFailed(e.output)
 
     def new_session(

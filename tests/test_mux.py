@@ -1,6 +1,7 @@
 import os
+import pytest
 import binascii
-from hecate.tmux import Tmux
+from hecate.tmux import Tmux, DeadServer
 import time
 
 muxes = []
@@ -88,3 +89,10 @@ def test_can_send_content_to_the_screen():
             break
 
     assert "\nhello world\n" in contents
+
+
+def test_can_detect_when_server_dies():
+    mux = newmux()
+    mux.kill_session(mux.sessions()[0])
+    with pytest.raises(DeadServer):
+        mux.sessions()

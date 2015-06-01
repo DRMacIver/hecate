@@ -1,10 +1,12 @@
 # coding=utf-8
 
+import hecate.runner as r
 from hecate.hecate import Runner, AbnormalExit
 import tempfile
 import pytest
 import sys
 import os
+import signal
 
 
 Runner.print_on_exit = True
@@ -101,3 +103,15 @@ def test_can_send_signals_to_child():
             for s in ["SIGTERM", "SIGUSR1", "SIGQUIT"]:
                 h.kill(s)
                 h.await_text(s)
+
+
+def test_uses_last_screenshot_if_server_goes_away():
+    with Runner("cat") as h:
+        h.write("Hello")
+        h.await_text("Hello")
+        h.kill("SIGKILL")
+        with pytest.raises(AbnormalExit):
+            h.await_exit()
+        controller = h.report_variables()[r.CONTROLLER]
+        os.kill(controller, signal.SIGKILL)
+        assert "Hello" in h.screenshot()

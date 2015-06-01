@@ -1,5 +1,5 @@
 import hecate.runner as runner
-from hecate.tmux import Tmux
+from hecate.tmux import Tmux, DeadServer
 import os
 import sys
 import time
@@ -95,6 +95,7 @@ class Runner(object):
         self.default_timeout = default_timeout
         self.has_shutdown = False
         self.tmux_id = binascii.hexlify(os.urandom(8)).decode('ascii')
+        self.exit_seen = False
         self.tmux = Tmux(self.tmux_id)
         try:
             self.report_file = os.path.join(
@@ -158,10 +159,11 @@ class Runner(object):
             return
         self.shutdown_called = True
         try:
-            try:
-                self.await_exit()
-            except Timeout:
-                pass
+            if not self.exit_seen:
+                try:
+                    self.await_exit()
+                except Timeout:
+                    pass
             if self.print_on_exit:
                 print(self.last_screenshot)
         finally:
@@ -188,9 +190,12 @@ class Runner(object):
         """
         Return a string representing the current state of the screen.
         """
-        result = self.tmux.capture_pane(0)
-        self.last_screenshot = result
-        return result
+        try:
+            result = self.tmux.capture_pane(0)
+            self.last_screenshot = result
+            return result
+        except DeadServer:
+            return self.last_screenshot
 
     def press(self, key):
         """
@@ -231,6 +236,7 @@ class Runner(object):
         for _ in self.poll_until_timeout(timeout):
             report = self.report_variables()
             if runner.EXIT_STATUS in report:
+                self.exit_seen = True
                 status = report[runner.EXIT_STATUS]
                 if status != 0:
                     raise AbnormalExit(
